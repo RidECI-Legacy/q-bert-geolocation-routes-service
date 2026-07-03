@@ -17,8 +17,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class PickUpPoint {
     
-    private String id;
-
     private String PassengerId;
 
     private LocalDateTime estimatedPickUpTime;
@@ -28,5 +26,7 @@ public class PickUpPoint {
     private Geofence geofenceConfig;
     
     private PickUpStatus pickUpStatus;
+
+    private int order;
 
 }
