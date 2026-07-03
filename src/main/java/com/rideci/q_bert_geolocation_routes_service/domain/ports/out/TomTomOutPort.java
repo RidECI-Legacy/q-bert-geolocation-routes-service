@@ -5,6 +5,7 @@ import java.util.List;
 import com.rideci.q_bert_geolocation_routes_service.domain.model.Geofence;
 import com.rideci.q_bert_geolocation_routes_service.domain.model.Location;
 import com.rideci.q_bert_geolocation_routes_service.domain.model.PickUpPoint;
+import com.rideci.q_bert_geolocation_routes_service.domain.model.RouteInfo;
 
 public interface TomTomOutPort {
     
