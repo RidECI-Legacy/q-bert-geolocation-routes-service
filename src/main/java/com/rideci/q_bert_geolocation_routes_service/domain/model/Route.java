@@ -32,7 +32,7 @@ public class Route {
 
     private String polyline;
 
-    private List<PickupPoint> pickupPoints;
+    private List<PickUpPoint> pickupPoints;
 
     private LocalDateTime createdAt;
 
