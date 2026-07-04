@@ -1,18 +1,16 @@
 package com.rideci.q_bert_geolocation_routes_service.domain.ports.out;
 
-import java.util.List;
-import java.util.Optional;
-
 import com.rideci.q_bert_geolocation_routes_service.domain.model.Route;
 
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
 public interface GeolocationRepositoryOutPort {
-    
-    Route saveRoute(Route route);
 
-    Optional<Route> updateRoute(String id, Route newRoute);
+    Mono<Route> save(Route route);
 
-    Optional<Route> findRouteById(String id);
+    Mono<Route> findRouteById(String id);
 
-    Optional<List<Route>> findAllRoutes();
+    Flux<Route> findAllRoutes();
 
 }

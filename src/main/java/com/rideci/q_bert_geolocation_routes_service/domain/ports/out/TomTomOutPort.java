@@ -2,22 +2,23 @@ package com.rideci.q_bert_geolocation_routes_service.domain.ports.out;
 
 import java.util.List;
 
-import com.rideci.q_bert_geolocation_routes_service.domain.model.Geofence;
 import com.rideci.q_bert_geolocation_routes_service.domain.model.Location;
 import com.rideci.q_bert_geolocation_routes_service.domain.model.PickUpPoint;
 import com.rideci.q_bert_geolocation_routes_service.domain.model.RouteInfo;
 
+import reactor.core.publisher.Mono;
+
 public interface TomTomOutPort {
-    
-    RouteInfo calculateRoute(Location origin, Location destination, List<PickUpPoint> waypoints);
 
-    Location geocodeAddress(String address);
+    Mono<RouteInfo> calculateRoute(Location origin, Location destination, List<PickUpPoint> waypoints);
 
-    String reverseGeocode(Location location);
+    Mono<Location> geocodeAddress(String address);
 
-    List<PickUpPoint> optimizeWaypoints(List<PickUpPoint> waypoints);
+    Mono<String> reverseGeocode(Location location);
 
-    List<Location> snapToRoad(List<Location> rawPositions);
+    Mono<List<PickUpPoint>> optimizeWaypoints(List<PickUpPoint> waypoints);
 
-    boolean isPointInsideGeofence(Location point, Geofence geofence);
+    Mono<List<Location>> snapToRoad(List<Location> rawPositions);
+
+    boolean isPointInsideGeofence(Location currentPosition, PickUpPoint pickUpPoint);
 }
