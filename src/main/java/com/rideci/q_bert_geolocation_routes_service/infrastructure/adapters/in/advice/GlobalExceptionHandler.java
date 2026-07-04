@@ -1,0 +1,45 @@
+package com.rideci.q_bert_geolocation_routes_service.infrastructure.adapters.in.advice;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import com.rideci.q_bert_geolocation_routes_service.domain.exception.InvalidRouteException;
+import com.rideci.q_bert_geolocation_routes_service.domain.exception.RouteNotFoundException;
+import com.rideci.q_bert_geolocation_routes_service.domain.exception.TomTomIntegrationException;
+import com.rideci.q_bert_geolocation_routes_service.infrastructure.adapters.in.dto.ErrorResponse;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+
+    @ExceptionHandler(RouteNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleRouteNotFound(RouteNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(ErrorResponse.of(HttpStatus.NOT_FOUND.value(), ex.getMessage()));
+    }
+
+    @ExceptionHandler(InvalidRouteException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidRoute(InvalidRouteException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(ErrorResponse.of(HttpStatus.BAD_REQUEST.value(), ex.getMessage()));
+    }
+
+    @ExceptionHandler(TomTomIntegrationException.class)
+    public ResponseEntity<ErrorResponse> handleTomTomIntegration(TomTomIntegrationException ex) {
+        log.error("TomTom integration failure", ex);
+        return ResponseEntity.status(HttpStatus.BAD_GATEWAY)
+                .body(ErrorResponse.of(HttpStatus.BAD_GATEWAY.value(), ex.getMessage()));
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> handleUnexpected(Exception ex) {
+        log.error("Unexpected error", ex);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(ErrorResponse.of(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Unexpected error"));
+    }
+
+}
