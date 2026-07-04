@@ -1,11 +1,11 @@
 package com.rideci.q_bert_geolocation_routes_service.domain.ports.in;
 
-import java.util.Optional;
-
 import com.rideci.q_bert_geolocation_routes_service.domain.model.Route;
 
+import reactor.core.publisher.Mono;
+
 public interface UpdateRouteUseCase {
-    
-    Optional<Route> updateRoute(String routeId, Route updatedRoute);
+
+    Mono<Route> updateRoute(String routeId, Route updatedRoute);
 
 }
