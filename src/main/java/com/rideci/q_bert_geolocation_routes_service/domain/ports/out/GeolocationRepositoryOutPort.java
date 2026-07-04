@@ -9,7 +9,7 @@ public interface GeolocationRepositoryOutPort {
     
     Route saveRoute(Route route);
 
-    Optional<Route> updateRoute(Route newRoute);
+    Optional<Route> updateRoute(String id, Route newRoute);
 
     Optional<Route> findRouteById(String id);
 

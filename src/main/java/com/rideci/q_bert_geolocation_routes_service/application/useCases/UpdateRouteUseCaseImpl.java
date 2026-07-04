@@ -16,7 +16,7 @@ public class UpdateRouteUseCaseImpl implements UpdateRouteUseCase {
 
     @Override
     public Optional<Route> updateRoute(String routeId, Route updatedRoute) {
-        return geolocationRepositoryOutPort.updateRoute(updatedRoute);
+        return geolocationRepositoryOutPort.updateRoute(routeId, updatedRoute);
     }
     
 }
