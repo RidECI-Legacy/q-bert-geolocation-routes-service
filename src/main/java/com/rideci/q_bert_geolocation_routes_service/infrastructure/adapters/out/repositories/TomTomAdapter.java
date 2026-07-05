@@ -85,9 +85,6 @@ public class TomTomAdapter implements TomTomOutPort {
             return Mono.just(rawPositions);
         }
 
-        // TomTom has no single-shot "snap to road" endpoint; this reuses the Routing
-        // API's road-following geometry between the raw points as an approximation.
-        // A dedicated Map Matching batch job would be needed for exact snapping.
         return callRoutingApi(rawPositions, false).map(this::toPath);
     }
 
@@ -110,7 +107,8 @@ public class TomTomAdapter implements TomTomOutPort {
                 .bodyToMono(TomTomGeocodeResponse.class)
                 .flatMap(response -> {
                     if (response.results() == null || response.results().isEmpty()) {
-                        return Mono.error(new TomTomIntegrationException("No geocoding result for address: " + address));
+                        return Mono
+                                .error(new TomTomIntegrationException("No geocoding result for address: " + address));
                     }
                     TomTomGeocodeResponse.Position position = response.results().get(0).position();
                     return Mono.just(Location.builder()
