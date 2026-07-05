@@ -9,6 +9,8 @@ public interface GeolocationRepositoryOutPort {
 
     Mono<Route> save(Route route);
 
+    Mono<Route> update(String id, Route newRoute);
+
     Mono<Route> findRouteById(String id);
 
     Flux<Route> findAllRoutes();
