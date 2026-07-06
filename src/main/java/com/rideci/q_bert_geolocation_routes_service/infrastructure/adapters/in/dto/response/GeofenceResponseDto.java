@@ -1,4 +1,4 @@
-package com.rideci.q_bert_geolocation_routes_service.infrastructure.adapters.in.controller.dto.response;
+package com.rideci.q_bert_geolocation_routes_service.infrastructure.adapters.in.dto.response;
 
 import java.time.LocalDateTime;
 

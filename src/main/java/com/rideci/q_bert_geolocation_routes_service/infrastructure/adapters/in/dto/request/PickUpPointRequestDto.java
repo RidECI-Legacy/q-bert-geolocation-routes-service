@@ -1,4 +1,4 @@
-package com.rideci.q_bert_geolocation_routes_service.infrastructure.adapters.in.controller.dto.request;
+package com.rideci.q_bert_geolocation_routes_service.infrastructure.adapters.in.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
