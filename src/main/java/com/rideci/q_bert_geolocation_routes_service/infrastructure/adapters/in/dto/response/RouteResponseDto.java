@@ -36,7 +36,7 @@ public class RouteResponseDto {
     @Schema(description = "Encoded polyline of the route")
     private String polyline;
 
-    @Schema(description = "Pickup points of the route, already optimized")
+    @Schema(description = "Pickup points of the route, already optimized and listed in visit order")
     private List<PickUpPointResponseDto> pickUpPoints;
 
     @Schema(description = "Creation date of the route")

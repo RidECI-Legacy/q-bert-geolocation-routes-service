@@ -28,7 +28,4 @@ public class PickUpPointResponseDto {
     @Schema(description = "Current status of the pickup point")
     private PickUpStatus pickUpStatus;
 
-    @Schema(description = "Order of the pickup point within the optimized route", example = "0")
-    private int order;
-
 }

@@ -105,7 +105,6 @@ class TomTomAdapterTest {
     void optimizeWaypoints_skipsCallWhenFewerThanThreePoints() {
         PickUpPoint single = PickUpPoint.builder()
                 .location(Location.builder().latitude(1).longitude(1).build())
-                .order(0)
                 .build();
 
         StepVerifier.create(tomTomAdapter.optimizeWaypoints(List.of(single)))

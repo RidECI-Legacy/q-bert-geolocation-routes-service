@@ -27,6 +27,4 @@ public class PickUpPoint {
     
     private PickUpStatus pickUpStatus;
 
-    private int order;
-
 }

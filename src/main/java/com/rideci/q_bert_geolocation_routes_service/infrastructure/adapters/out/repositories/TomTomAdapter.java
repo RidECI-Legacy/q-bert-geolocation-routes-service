@@ -5,6 +5,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -214,13 +215,7 @@ public class TomTomAdapter implements TomTomOutPort {
         for (TomTomRouteResponse.OptimizedWaypoint optimizedWaypoint : response.routes().get(0).optimizedWaypoints()) {
             reordered[optimizedWaypoint.optimizedIndex()] = waypoints.get(optimizedWaypoint.providedIndex());
         }
-
-        List<PickUpPoint> result = new ArrayList<>(reordered.length);
-        for (int i = 0; i < reordered.length; i++) {
-            reordered[i].setOrder(i);
-            result.add(reordered[i]);
-        }
-        return result;
+        return Arrays.asList(reordered);
     }
 
 }

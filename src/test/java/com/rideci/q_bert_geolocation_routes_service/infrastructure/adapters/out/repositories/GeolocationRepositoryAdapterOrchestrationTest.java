@@ -49,7 +49,7 @@ class GeolocationRepositoryAdapterOrchestrationTest {
         Location origin = Location.builder().latitude(4.60).longitude(-74.08).build();
         Location destination = Location.builder().latitude(4.65).longitude(-74.05).build();
         List<PickUpPoint> pickUpPoints = List.of(
-                PickUpPoint.builder().passengerId("p1").location(origin).order(0).build());
+                PickUpPoint.builder().passengerId("p1").location(origin).build());
 
         Route inputRoute = Route.builder()
                 .tripId("trip-1")
@@ -90,7 +90,7 @@ class GeolocationRepositoryAdapterOrchestrationTest {
     void save_propagatesTomTomFailure() {
         Location origin = Location.builder().latitude(4.60).longitude(-74.08).build();
         List<PickUpPoint> pickUpPoints = List.of(
-                PickUpPoint.builder().passengerId("p1").location(origin).order(0).build());
+                PickUpPoint.builder().passengerId("p1").location(origin).build());
         Route inputRoute = Route.builder().tripId("trip-1").origin(origin).pickUpPoints(pickUpPoints).build();
 
         RuntimeException tomTomFailure = new RuntimeException("TomTom unavailable");
@@ -106,7 +106,7 @@ class GeolocationRepositoryAdapterOrchestrationTest {
         Location newOrigin = Location.builder().latitude(4.61).longitude(-74.09).build();
         Location newDestination = Location.builder().latitude(4.66).longitude(-74.06).build();
         List<PickUpPoint> newPickUpPoints = List.of(
-                PickUpPoint.builder().passengerId("p2").location(newOrigin).order(0).build());
+                PickUpPoint.builder().passengerId("p2").location(newOrigin).build());
 
         Route existingRoute = Route.builder()
                 .id("route-1")

@@ -25,6 +25,4 @@ public class PickUpPointDocument {
 
     private PickUpStatus pickUpStatus;
 
-    private int order;
-
 }

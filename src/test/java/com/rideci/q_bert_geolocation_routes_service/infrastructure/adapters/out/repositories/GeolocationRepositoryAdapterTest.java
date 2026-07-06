@@ -73,7 +73,6 @@ class GeolocationRepositoryAdapterTest {
                 .location(Location.builder().latitude(4.6).longitude(-74.08).timestamp(LocalDateTime.now()).build())
                 .geofenceConfig(geofence)
                 .pickUpStatus(PickUpStatus.PENDING)
-                .order(0)
                 .build();
 
         Route route = Route.builder()
