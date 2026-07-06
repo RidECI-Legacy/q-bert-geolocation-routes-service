@@ -33,8 +33,7 @@ public class RouteRequestDto {
     private LocationRequestDto destination;
 
     @NotEmpty(message = "pickup points cannot be empty")
-    @Valid
     @Schema(description = "Pickup points to include in the route")
-    private List<PickUpPointRequestDto> pickUpPoints;
+    private List<@Valid PickUpPointRequestDto> pickUpPoints;
 
 }
