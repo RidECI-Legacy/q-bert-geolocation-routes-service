@@ -31,15 +31,14 @@ public class GeolocationRepositoryAdapter implements GeolocationRepositoryOutPor
 
     @Override
     public Mono<Route> save(Route route) {
-        Mono<Route> newRoute = tomTomOutPort.optimizeWaypoints(route.getPickUpPoints())
+        return tomTomOutPort.optimizeWaypoints(route.getPickUpPoints())
                 .flatMap(optimizedPickUpPoints -> tomTomOutPort
                         .calculateRoute(route.getOrigin(), route.getDestination(), optimizedPickUpPoints)
-                        .map(routeInfo -> buildRoute(route, optimizedPickUpPoints, routeInfo)));
+                        .map(routeInfo -> buildRoute(route, optimizedPickUpPoints, routeInfo)))
+                .map(routeMapper::toDocument)
+                .flatMap(geolocationRepository::save)
+                .map(routeMapper::toDomain);
 
-        RouteDocument routeDocument = routeMapper.toDocument(route);
-        geolocationRepository.save(routeDocument);
-
-        return newRoute;
     }
 
     private Route buildRoute(Route route, List<PickUpPoint> optimizedPickUpPoints, RouteInfo routeInfo) {
