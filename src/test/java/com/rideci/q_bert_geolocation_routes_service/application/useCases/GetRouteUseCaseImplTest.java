@@ -32,12 +32,14 @@ class GetRouteUseCaseImplTest {
     }
 
     @Test
-    void getRoute_emitsRouteNotFoundWhenMissing() {
+    void getRoute_propagatesRouteNotFoundFromRepository() {
         GetRouteUseCaseImpl getRouteUseCase = new GetRouteUseCaseImpl(geolocationRepositoryOutPort);
-        when(geolocationRepositoryOutPort.findRouteById("missing")).thenReturn(Mono.empty());
+        when(geolocationRepositoryOutPort.findRouteById("missing"))
+                .thenReturn(Mono.error(new RouteNotFoundException("missing")));
 
         StepVerifier.create(getRouteUseCase.getRoute("missing"))
-                .expectErrorMatches(error -> error instanceof RouteNotFoundException)
+                .expectErrorMatches(error -> error instanceof RouteNotFoundException
+                        && ((RouteNotFoundException) error).getRouteId().equals("missing"))
                 .verify();
     }
 

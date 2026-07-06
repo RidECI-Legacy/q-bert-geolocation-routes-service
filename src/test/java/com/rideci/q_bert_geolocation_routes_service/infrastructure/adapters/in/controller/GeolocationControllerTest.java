@@ -11,13 +11,13 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
+import com.rideci.q_bert_geolocation_routes_service.application.service.GeolocationService;
 import com.rideci.q_bert_geolocation_routes_service.domain.exception.RouteNotFoundException;
 import com.rideci.q_bert_geolocation_routes_service.domain.model.Route;
-import com.rideci.q_bert_geolocation_routes_service.domain.ports.in.CreateRouteUseCase;
-import com.rideci.q_bert_geolocation_routes_service.domain.ports.in.GetAllRoutesUseCase;
-import com.rideci.q_bert_geolocation_routes_service.domain.ports.in.GetRouteUseCase;
-import com.rideci.q_bert_geolocation_routes_service.domain.ports.in.UpdateRouteUseCase;
 import com.rideci.q_bert_geolocation_routes_service.infrastructure.adapters.in.advice.GlobalExceptionHandler;
+import com.rideci.q_bert_geolocation_routes_service.infrastructure.adapters.in.dto.request.RouteRequestDto;
+import com.rideci.q_bert_geolocation_routes_service.infrastructure.adapters.in.dto.response.RouteResponseDto;
+import com.rideci.q_bert_geolocation_routes_service.infrastructure.adapters.in.mapper.RouteControllerMapper;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -30,26 +30,25 @@ class GeolocationControllerTest {
     private WebTestClient webTestClient;
 
     @MockitoBean
-    private CreateRouteUseCase createRouteUseCase;
+    private GeolocationService geolocationService;
 
     @MockitoBean
-    private UpdateRouteUseCase updateRouteUseCase;
-
-    @MockitoBean
-    private GetRouteUseCase getRouteUseCase;
-
-    @MockitoBean
-    private GetAllRoutesUseCase getAllRoutesUseCase;
+    private RouteControllerMapper routeControllerMapper;
 
     @Test
     void createRoute_returns201WithCreatedRoute() {
-        Route route = Route.builder().tripId("trip-1").build();
+        RouteRequestDto requestDto = RouteRequestDto.builder().tripId("trip-1").build();
+        Route domainRoute = Route.builder().tripId("trip-1").build();
         Route saved = Route.builder().id("route-1").tripId("trip-1").build();
-        when(createRouteUseCase.createRoute(any(Route.class))).thenReturn(Mono.just(saved));
+        RouteResponseDto responseDto = RouteResponseDto.builder().id("route-1").tripId("trip-1").build();
+
+        when(routeControllerMapper.toDomain(any(RouteRequestDto.class))).thenReturn(domainRoute);
+        when(geolocationService.createRoute(domainRoute)).thenReturn(Mono.just(saved));
+        when(routeControllerMapper.toResponse(saved)).thenReturn(responseDto);
 
         webTestClient.post().uri("/api/v1/routes")
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(route)
+                .bodyValue(requestDto)
                 .exchange()
                 .expectStatus().isCreated()
                 .expectBody()
@@ -59,7 +58,10 @@ class GeolocationControllerTest {
     @Test
     void getRoute_returns200WhenFound() {
         Route route = Route.builder().id("route-1").build();
-        when(getRouteUseCase.getRoute("route-1")).thenReturn(Mono.just(route));
+        RouteResponseDto responseDto = RouteResponseDto.builder().id("route-1").build();
+
+        when(geolocationService.getRoute("route-1")).thenReturn(Mono.just(route));
+        when(routeControllerMapper.toResponse(route)).thenReturn(responseDto);
 
         webTestClient.get().uri("/api/v1/routes/route-1")
                 .exchange()
@@ -70,7 +72,7 @@ class GeolocationControllerTest {
 
     @Test
     void getRoute_returns404WhenNotFound() {
-        when(getRouteUseCase.getRoute("missing")).thenReturn(Mono.error(new RouteNotFoundException("missing")));
+        when(geolocationService.getRoute("missing")).thenReturn(Mono.error(new RouteNotFoundException("missing")));
 
         webTestClient.get().uri("/api/v1/routes/missing")
                 .exchange()
@@ -81,21 +83,30 @@ class GeolocationControllerTest {
 
     @Test
     void getAllRoutes_returns200WithFlux() {
-        when(getAllRoutesUseCase.getAllRoutes())
-                .thenReturn(Flux.just(Route.builder().id("a").build(), Route.builder().id("b").build()));
+        Route routeA = Route.builder().id("a").build();
+        Route routeB = Route.builder().id("b").build();
+
+        when(geolocationService.getAllRoutes()).thenReturn(Flux.just(routeA, routeB));
+        when(routeControllerMapper.toResponse(routeA)).thenReturn(RouteResponseDto.builder().id("a").build());
+        when(routeControllerMapper.toResponse(routeB)).thenReturn(RouteResponseDto.builder().id("b").build());
 
         webTestClient.get().uri("/api/v1/routes")
                 .exchange()
                 .expectStatus().isOk()
-                .expectBodyList(Route.class)
+                .expectBodyList(Object.class)
                 .hasSize(2);
     }
 
     @Test
     void updateRoute_returns200WithUpdatedRoute() {
-        Route payload = Route.builder().tripId("trip-1").build();
+        RouteRequestDto payload = RouteRequestDto.builder().tripId("trip-1").build();
+        Route domainRoute = Route.builder().tripId("trip-1").build();
         Route updated = Route.builder().id("route-1").tripId("trip-1").build();
-        when(updateRouteUseCase.updateRoute(eq("route-1"), any(Route.class))).thenReturn(Mono.just(updated));
+        RouteResponseDto responseDto = RouteResponseDto.builder().id("route-1").tripId("trip-1").build();
+
+        when(routeControllerMapper.toDomain(any(RouteRequestDto.class))).thenReturn(domainRoute);
+        when(geolocationService.updateRoute(eq("route-1"), any(Route.class))).thenReturn(Mono.just(updated));
+        when(routeControllerMapper.toResponse(updated)).thenReturn(responseDto);
 
         webTestClient.put().uri("/api/v1/routes/route-1")
                 .contentType(MediaType.APPLICATION_JSON)
