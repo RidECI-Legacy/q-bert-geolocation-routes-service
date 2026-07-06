@@ -14,7 +14,6 @@ import org.junit.jupiter.api.Test;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
-import com.rideci.q_bert_geolocation_routes_service.domain.exception.TomTomIntegrationException;
 import com.rideci.q_bert_geolocation_routes_service.domain.model.Location;
 import com.rideci.q_bert_geolocation_routes_service.domain.model.PickUpPoint;
 import com.rideci.q_bert_geolocation_routes_service.domain.model.RouteInfo;
