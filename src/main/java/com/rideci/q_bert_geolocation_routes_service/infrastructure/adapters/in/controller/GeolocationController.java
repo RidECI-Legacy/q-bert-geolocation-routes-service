@@ -24,6 +24,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -48,7 +49,7 @@ public class GeolocationController {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @PostMapping
-    public ResponseEntity<Mono<RouteResponseDto>> createRoute(@RequestBody RouteRequestDto route) {
+    public ResponseEntity<Mono<RouteResponseDto>> createRoute(@Valid @RequestBody RouteRequestDto route) {
         Route newRoute = routeControllerMapper.toDomain(route);
 
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -69,7 +70,7 @@ public class GeolocationController {
     @PutMapping("/{id}")
     public ResponseEntity<Mono<RouteResponseDto>> updateRoute(
             @Parameter(description = "Id of the route to update") @PathVariable String id,
-            @RequestBody RouteRequestDto route) {
+            @Valid @RequestBody RouteRequestDto route) {
         Route routeToUpdate = routeControllerMapper.toDomain(route);
 
         return ResponseEntity

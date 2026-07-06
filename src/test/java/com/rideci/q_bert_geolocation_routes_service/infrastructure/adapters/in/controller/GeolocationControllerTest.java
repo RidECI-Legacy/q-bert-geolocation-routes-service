@@ -4,6 +4,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webflux.test.autoconfigure.WebFluxTest;
@@ -15,6 +17,9 @@ import com.rideci.q_bert_geolocation_routes_service.application.service.Geolocat
 import com.rideci.q_bert_geolocation_routes_service.domain.exception.RouteNotFoundException;
 import com.rideci.q_bert_geolocation_routes_service.domain.model.Route;
 import com.rideci.q_bert_geolocation_routes_service.infrastructure.adapters.in.advice.GlobalExceptionHandler;
+import com.rideci.q_bert_geolocation_routes_service.infrastructure.adapters.in.dto.request.GeofenceRequestDto;
+import com.rideci.q_bert_geolocation_routes_service.infrastructure.adapters.in.dto.request.LocationRequestDto;
+import com.rideci.q_bert_geolocation_routes_service.infrastructure.adapters.in.dto.request.PickUpPointRequestDto;
 import com.rideci.q_bert_geolocation_routes_service.infrastructure.adapters.in.dto.request.RouteRequestDto;
 import com.rideci.q_bert_geolocation_routes_service.infrastructure.adapters.in.dto.response.RouteResponseDto;
 import com.rideci.q_bert_geolocation_routes_service.infrastructure.adapters.in.mapper.RouteControllerMapper;
@@ -35,9 +40,22 @@ class GeolocationControllerTest {
     @MockitoBean
     private RouteControllerMapper routeControllerMapper;
 
+    private static RouteRequestDto validRouteRequest(String tripId) {
+        return RouteRequestDto.builder()
+                .tripId(tripId)
+                .origin(LocationRequestDto.builder().latitude(4.710989).longitude(-74.072092).build())
+                .destination(LocationRequestDto.builder().latitude(4.6975).longitude(-74.0833).build())
+                .pickUpPoints(List.of(PickUpPointRequestDto.builder()
+                        .passengerId("passenger-1")
+                        .location(LocationRequestDto.builder().latitude(4.65).longitude(-74.05).build())
+                        .geofenceConfig(GeofenceRequestDto.builder().radiusMeters(50).build())
+                        .build()))
+                .build();
+    }
+
     @Test
     void createRoute_returns201WithCreatedRoute() {
-        RouteRequestDto requestDto = RouteRequestDto.builder().tripId("trip-1").build();
+        RouteRequestDto requestDto = validRouteRequest("trip-1");
         Route domainRoute = Route.builder().tripId("trip-1").build();
         Route saved = Route.builder().id("route-1").tripId("trip-1").build();
         RouteResponseDto responseDto = RouteResponseDto.builder().id("route-1").tripId("trip-1").build();
@@ -99,7 +117,7 @@ class GeolocationControllerTest {
 
     @Test
     void updateRoute_returns200WithUpdatedRoute() {
-        RouteRequestDto payload = RouteRequestDto.builder().tripId("trip-1").build();
+        RouteRequestDto payload = validRouteRequest("trip-1");
         Route domainRoute = Route.builder().tripId("trip-1").build();
         Route updated = Route.builder().id("route-1").tripId("trip-1").build();
         RouteResponseDto responseDto = RouteResponseDto.builder().id("route-1").tripId("trip-1").build();
