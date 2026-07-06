@@ -1,6 +1,5 @@
 package com.rideci.q_bert_geolocation_routes_service.infrastructure.adapters.in.controller;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,11 +9,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.rideci.q_bert_geolocation_routes_service.application.service.GeolocationService;
 import com.rideci.q_bert_geolocation_routes_service.domain.model.Route;
-import com.rideci.q_bert_geolocation_routes_service.domain.ports.in.CreateRouteUseCase;
-import com.rideci.q_bert_geolocation_routes_service.domain.ports.in.GetAllRoutesUseCase;
-import com.rideci.q_bert_geolocation_routes_service.domain.ports.in.GetRouteUseCase;
-import com.rideci.q_bert_geolocation_routes_service.domain.ports.in.UpdateRouteUseCase;
+import com.rideci.q_bert_geolocation_routes_service.infrastructure.adapters.in.dto.request.RouteRequestDto;
+import com.rideci.q_bert_geolocation_routes_service.infrastructure.adapters.in.dto.response.RouteResponseDto;
+import com.rideci.q_bert_geolocation_routes_service.infrastructure.adapters.in.mapper.RouteControllerMapper;
 
 import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Flux;
@@ -25,30 +24,33 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class GeolocationController {
 
-    private final CreateRouteUseCase createRouteUseCase;
-    private final UpdateRouteUseCase updateRouteUseCase;
-    private final GetRouteUseCase getRouteUseCase;
-    private final GetAllRoutesUseCase getAllRoutesUseCase;
+    private final GeolocationService geolocationService;
+    private final RouteControllerMapper routeControllerMapper;
 
     @PostMapping
-    public Mono<ResponseEntity<Route>> createRoute(@RequestBody Route route) {
-        return createRouteUseCase.createRoute(route)
-                .map(created -> ResponseEntity.status(HttpStatus.CREATED).body(created));
+    public ResponseEntity<Mono<RouteResponseDto>> createRoute(@RequestBody RouteRequestDto route) {
+        Route newRoute = routeControllerMapper.toDomain(route);
+
+        return ResponseEntity.ok(geolocationService.createRoute(newRoute).map(routeControllerMapper::toResponse));
     }
 
     @PutMapping("/{id}")
-    public Mono<Route> updateRoute(@PathVariable String id, @RequestBody Route route) {
-        return updateRouteUseCase.updateRoute(id, route);
+    public ResponseEntity<Mono<RouteResponseDto>> updateRoute(@PathVariable String id,
+            @RequestBody RouteRequestDto route) {
+        Route routeToUpdate = routeControllerMapper.toDomain(route);
+
+        return ResponseEntity
+                .ok(geolocationService.updateRoute(id, routeToUpdate).map(routeControllerMapper::toResponse));
     }
 
     @GetMapping("/{id}")
-    public Mono<Route> getRoute(@PathVariable String id) {
-        return getRouteUseCase.getRoute(id);
+    public Mono<RouteResponseDto> getRoute(@PathVariable String id) {
+        return geolocationService.getRoute(id).map(routeControllerMapper::toResponse);
     }
 
     @GetMapping
-    public Flux<Route> getAllRoutes() {
-        return getAllRoutesUseCase.getAllRoutes();
+    public Flux<RouteResponseDto> getAllRoutes() {
+        return geolocationService.getAllRoutes().map(routeControllerMapper::toResponse);
     }
 
 }
