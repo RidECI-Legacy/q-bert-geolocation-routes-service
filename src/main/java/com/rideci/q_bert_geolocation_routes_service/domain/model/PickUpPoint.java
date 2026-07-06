@@ -17,7 +17,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class PickUpPoint {
     
-    private String PassengerId;
+    private String passengerId;
 
     private LocalDateTime estimatedPickUpTime;
 

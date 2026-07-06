@@ -36,7 +36,7 @@ public class RouteDocument {
 
     private String polyline;
 
-    private List<PickUpPointDocument> pickupPoints;
+    private List<PickUpPointDocument> pickUpPoints;
 
     private LocalDateTime createdAt;
 

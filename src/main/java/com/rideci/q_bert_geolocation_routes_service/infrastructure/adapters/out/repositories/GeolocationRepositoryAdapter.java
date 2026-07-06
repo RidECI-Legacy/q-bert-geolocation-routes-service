@@ -31,10 +31,10 @@ public class GeolocationRepositoryAdapter implements GeolocationRepositoryOutPor
 
     @Override
     public Mono<Route> save(Route route) {
-        Mono<Route> newRoute = tomTomOutPort.optimizeWaypoints(route.getPickupPoints())
-                .flatMap(optimizedPickupPoints -> tomTomOutPort
-                        .calculateRoute(route.getOrigin(), route.getDestination(), optimizedPickupPoints)
-                        .map(routeInfo -> buildRoute(route, optimizedPickupPoints, routeInfo)));
+        Mono<Route> newRoute = tomTomOutPort.optimizeWaypoints(route.getPickUpPoints())
+                .flatMap(optimizedPickUpPoints -> tomTomOutPort
+                        .calculateRoute(route.getOrigin(), route.getDestination(), optimizedPickUpPoints)
+                        .map(routeInfo -> buildRoute(route, optimizedPickUpPoints, routeInfo)));
 
         RouteDocument routeDocument = routeMapper.toDocument(route);
         geolocationRepository.save(routeDocument);
@@ -42,7 +42,7 @@ public class GeolocationRepositoryAdapter implements GeolocationRepositoryOutPor
         return newRoute;
     }
 
-    private Route buildRoute(Route route, List<PickUpPoint> optimizedPickupPoints, RouteInfo routeInfo) {
+    private Route buildRoute(Route route, List<PickUpPoint> optimizedPickUpPoints, RouteInfo routeInfo) {
         LocalDateTime now = LocalDateTime.now();
         return Route.builder()
                 .id(UUID.randomUUID().toString())
@@ -53,7 +53,7 @@ public class GeolocationRepositoryAdapter implements GeolocationRepositoryOutPor
                 .remainingDistance(routeInfo.getTotalDistance())
                 .estimatedArrivalTime(routeInfo.getEstimatedArrivalTime())
                 .polyline(routeInfo.getPolyline())
-                .pickupPoints(optimizedPickupPoints)
+                .pickUpPoints(optimizedPickUpPoints)
                 .createdAt(now)
                 .updatedAt(now)
                 .build();
@@ -65,7 +65,7 @@ public class GeolocationRepositoryAdapter implements GeolocationRepositoryOutPor
                 .switchIfEmpty(Mono.error(() -> new RouteNotFoundException(id)))
                 .map(routeMapper::toDomain)
                 .map(existingRoute -> mergeEditableFields(existingRoute, updatedRoute))
-                .flatMap(mergedRoute -> tomTomOutPort.optimizeWaypoints(mergedRoute.getPickupPoints())
+                .flatMap(mergedRoute -> tomTomOutPort.optimizeWaypoints(mergedRoute.getPickUpPoints())
                         .flatMap(optimizedPickupPoints -> tomTomOutPort
                                 .calculateRoute(mergedRoute.getOrigin(), mergedRoute.getDestination(),
                                         optimizedPickupPoints)
@@ -78,12 +78,12 @@ public class GeolocationRepositoryAdapter implements GeolocationRepositoryOutPor
     private Route mergeEditableFields(Route existingRoute, Route updatedRoute) {
         existingRoute.setOrigin(updatedRoute.getOrigin());
         existingRoute.setDestination(updatedRoute.getDestination());
-        existingRoute.setPickupPoints(updatedRoute.getPickupPoints());
+        existingRoute.setPickUpPoints(updatedRoute.getPickUpPoints());
         return existingRoute;
     }
 
     private Route applyRouteInfo(Route route, List<PickUpPoint> optimizedPickupPoints, RouteInfo routeInfo) {
-        route.setPickupPoints(optimizedPickupPoints);
+        route.setPickUpPoints(optimizedPickupPoints);
         route.setTotalDistance(routeInfo.getTotalDistance());
         route.setRemainingDistance(routeInfo.getTotalDistance());
         route.setEstimatedArrivalTime(routeInfo.getEstimatedArrivalTime());
