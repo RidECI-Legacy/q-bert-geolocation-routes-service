@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
+	<suppress>
+		<notes><![CDATA[
+		False positive: dependency-check reads the artifact version of the Spring Boot
+		module jar "spring-boot-data-mongodb" (4.1.0, i.e. the Spring Boot release version)
+		and matches it against the cpe:2.3:a:vmware:spring_data_mongodb CPE, which is
+		versioned independently by the actual spring-data-mongodb library.
+		The real spring-data-mongodb artifact pulled transitively is version 5.1.0,
+		which is not in any affected range for CVE-2026-41717 (affected ranges top out
+		at 5.0.5; see https://nvd.nist.gov/vuln/detail/CVE-2026-41717). Only the
+		spring_data_mongodb CPE match is suppressed here; the spring_boot CPE match on
+		this same jar is left active so genuine Spring Boot 4.1.0 CVEs still fail the build.
+		]]></notes>
+		<packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring\-boot\-data\-mongodb(\-test)?@.*$</packageUrl>
+		<cpe>cpe:2.3:a:vmware:spring_data_mongodb:4.1.0:*:*:*:*:*:*:*</cpe>
+		<cve>CVE-2026-41717</cve>
+	</suppress>
+</suppressions>
