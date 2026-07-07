@@ -35,3 +35,5 @@ build/
 .claude/
 
 .env
+
+run-dev.sh
