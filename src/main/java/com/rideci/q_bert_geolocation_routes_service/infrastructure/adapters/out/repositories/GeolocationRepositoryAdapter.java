@@ -1,6 +1,7 @@
 package com.rideci.q_bert_geolocation_routes_service.infrastructure.adapters.out.repositories;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.UUID;
 
@@ -42,7 +43,7 @@ public class GeolocationRepositoryAdapter implements GeolocationRepositoryOutPor
     }
 
     private Route buildRoute(Route route, List<PickUpPoint> optimizedPickUpPoints, RouteInfo routeInfo) {
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now(ZoneOffset.UTC);
         return Route.builder()
                 .id(UUID.randomUUID().toString())
                 .tripId(route.getTripId())
@@ -87,7 +88,7 @@ public class GeolocationRepositoryAdapter implements GeolocationRepositoryOutPor
         route.setRemainingDistance(routeInfo.getTotalDistance());
         route.setEstimatedArrivalTime(routeInfo.getEstimatedArrivalTime());
         route.setPolyline(routeInfo.getPolyline());
-        route.setUpdatedAt(LocalDateTime.now());
+        route.setUpdatedAt(LocalDateTime.now(ZoneOffset.UTC));
         return route;
     }
 

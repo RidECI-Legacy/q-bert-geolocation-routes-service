@@ -12,17 +12,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.rideci.q_bert_geolocation_routes_service.application.service.GeolocationService;
 import com.rideci.q_bert_geolocation_routes_service.domain.model.Route;
-import com.rideci.q_bert_geolocation_routes_service.infrastructure.adapters.in.dto.ErrorResponse;
 import com.rideci.q_bert_geolocation_routes_service.infrastructure.adapters.in.dto.request.RouteRequestDto;
 import com.rideci.q_bert_geolocation_routes_service.infrastructure.adapters.in.dto.response.RouteResponseDto;
 import com.rideci.q_bert_geolocation_routes_service.infrastructure.adapters.in.mapper.RouteControllerMapper;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -42,12 +37,6 @@ public class GeolocationController {
             Creates a new route from an origin, destination and pickup points. \
             The service calculates distance, estimated arrival time and polyline, \
             optimizing the order of the pickup points through TomTom.""")
-    @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "Route created successfully",
-                    content = @Content(schema = @Schema(implementation = RouteResponseDto.class))),
-            @ApiResponse(responseCode = "502", description = "Failed to integrate with the geolocation provider (TomTom)",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    })
     @PostMapping
     public ResponseEntity<Mono<RouteResponseDto>> createRoute(@Valid @RequestBody RouteRequestDto route) {
         Route newRoute = routeControllerMapper.toDomain(route);
@@ -59,14 +48,6 @@ public class GeolocationController {
     @Operation(summary = "Update a route", description = """
             Updates the origin, destination and/or pickup points of an existing route, \
             recalculating distance, ETA and polyline.""")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Route updated successfully",
-                    content = @Content(schema = @Schema(implementation = RouteResponseDto.class))),
-            @ApiResponse(responseCode = "404", description = "No route exists with the given id",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
-            @ApiResponse(responseCode = "502", description = "Failed to integrate with the geolocation provider (TomTom)",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    })
     @PutMapping("/{id}")
     public ResponseEntity<Mono<RouteResponseDto>> updateRoute(
             @Parameter(description = "Id of the route to update") @PathVariable String id,
@@ -78,12 +59,6 @@ public class GeolocationController {
     }
 
     @Operation(summary = "Get a route by id")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Route found",
-                    content = @Content(schema = @Schema(implementation = RouteResponseDto.class))),
-            @ApiResponse(responseCode = "404", description = "No route exists with the given id",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    })
     @GetMapping("/{id}")
     public Mono<RouteResponseDto> getRoute(
             @Parameter(description = "Id of the route to retrieve") @PathVariable String id) {
@@ -91,8 +66,6 @@ public class GeolocationController {
     }
 
     @Operation(summary = "List all routes")
-    @ApiResponse(responseCode = "200", description = "List of routes",
-            content = @Content(schema = @Schema(implementation = RouteResponseDto.class)))
     @GetMapping
     public Flux<RouteResponseDto> getAllRoutes() {
         return geolocationService.getAllRoutes().map(routeControllerMapper::toResponse);

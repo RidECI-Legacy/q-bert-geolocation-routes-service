@@ -1,4 +1,4 @@
-package com.rideci.q_bert_geolocation_routes_service.application.useCases;
+package com.rideci.q_bert_geolocation_routes_service.application.use_cases;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;

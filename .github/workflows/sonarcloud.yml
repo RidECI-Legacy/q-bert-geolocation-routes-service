@@ -1,0 +1,60 @@
+name: SonarCloud Analysis
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+concurrency:
+  group: sonar-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  TOMTOM_API_KEY: dummy-key-for-ci
+
+jobs:
+  sonarcloud:
+    name: SonarCloud Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK 26
+        uses: actions/setup-java@v4
+        with:
+          java-version: '26'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+
+      - name: Build, test and analyze
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          IS_PULL_REQUEST: ${{ github.event_name == 'pull_request' }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_HEAD_BRANCH: ${{ github.head_ref }}
+          PR_BASE_BRANCH: ${{ github.base_ref }}
+          PUSH_REF_NAME: ${{ github.ref_name }}
+        run: |
+          if [ "$IS_PULL_REQUEST" = "true" ]; then
+            PR_ARGS="-Dsonar.pullrequest.key=$PR_NUMBER \
+              -Dsonar.pullrequest.branch=$PR_HEAD_BRANCH \
+              -Dsonar.pullrequest.base=$PR_BASE_BRANCH"
+          else
+            PR_ARGS="-Dsonar.branch.name=$PUSH_REF_NAME"
+          fi
+          ./mvnw -B verify sonar:sonar -Dsonar.qualitygate.wait=true $PR_ARGS

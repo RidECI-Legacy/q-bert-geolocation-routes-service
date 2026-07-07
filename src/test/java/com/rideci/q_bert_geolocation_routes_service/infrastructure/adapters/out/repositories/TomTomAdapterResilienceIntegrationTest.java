@@ -62,7 +62,7 @@ class TomTomAdapterResilienceIntegrationTest {
         Location destination = Location.builder().latitude(4.65).longitude(-74.05).build();
 
         StepVerifier.create(tomTomAdapter.calculateRoute(origin, destination, List.of()))
-                .expectErrorMatches(error -> error instanceof TomTomIntegrationException)
+                .expectErrorMatches(TomTomIntegrationException.class::isInstance)
                 .verify(Duration.ofSeconds(10));
 
         wireMockServer.verify(3, com.github.tomakehurst.wiremock.client.WireMock
