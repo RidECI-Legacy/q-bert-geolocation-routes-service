@@ -4,6 +4,7 @@ import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -115,7 +116,7 @@ public class TomTomAdapter implements TomTomOutPort {
                     return Mono.just(Location.builder()
                             .latitude(position.lat())
                             .longitude(position.lon())
-                            .timestamp(LocalDateTime.now())
+                            .timestamp(LocalDateTime.now(ZoneOffset.UTC))
                             .build());
                 });
     }
