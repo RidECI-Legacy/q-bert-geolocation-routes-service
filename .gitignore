@@ -31,3 +31,9 @@ build/
 
 ### VS Code ###
 .vscode/
+
+.claude/
+
+.env
+
+run-dev.sh
