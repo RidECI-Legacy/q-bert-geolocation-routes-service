@@ -55,7 +55,19 @@ jobs:
       - name: Run OWASP Dependency-Check
         env:
           NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
-        run: ./mvnw -B org.owasp:dependency-check-maven:check -DnvdApiKey="$NVD_API_KEY"
+        run: |
+          max_attempts=3
+          attempt=1
+          until ./mvnw -B org.owasp:dependency-check-maven:check -DnvdApiKey="$NVD_API_KEY"; do
+            if [ "$attempt" -ge "$max_attempts" ]; then
+              echo "Dependency-Check failed after $attempt attempts, giving up."
+              exit 1
+            fi
+            wait_seconds=$((attempt * 60))
+            echo "Attempt $attempt failed (likely a transient NVD API error), retrying in ${wait_seconds}s..."
+            sleep "$wait_seconds"
+            attempt=$((attempt + 1))
+          done
 
       - name: Upload SARIF to GitHub Security tab
         if: always()
