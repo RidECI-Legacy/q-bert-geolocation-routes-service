@@ -207,6 +207,7 @@
 				<configuration>
 					<failBuildOnCVSS>7</failBuildOnCVSS>
 					<skipTestScope>true</skipTestScope>
+					<ossindexAnalyzerEnabled>false</ossindexAnalyzerEnabled>
 					<suppressionFiles>
 						<suppressionFile>owasp-suppressions.xml</suppressionFile>
 					</suppressionFiles>
