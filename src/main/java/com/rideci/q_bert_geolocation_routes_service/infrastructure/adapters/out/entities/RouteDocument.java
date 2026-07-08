@@ -38,6 +38,8 @@ public class RouteDocument {
 
     private List<PickUpPointDocument> pickUpPoints;
 
+    private TravelTrackingDocument travelTracking;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
