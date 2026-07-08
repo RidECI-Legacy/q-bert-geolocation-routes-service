@@ -11,6 +11,7 @@ import com.rideci.q_bert_geolocation_routes_service.domain.exception.RouteNotFou
 import com.rideci.q_bert_geolocation_routes_service.domain.model.PickUpPoint;
 import com.rideci.q_bert_geolocation_routes_service.domain.model.Route;
 import com.rideci.q_bert_geolocation_routes_service.domain.model.RouteInfo;
+import com.rideci.q_bert_geolocation_routes_service.domain.model.TravelTracking;
 import com.rideci.q_bert_geolocation_routes_service.domain.ports.out.GeolocationRepositoryOutPort;
 import com.rideci.q_bert_geolocation_routes_service.domain.ports.out.TomTomOutPort;
 import com.rideci.q_bert_geolocation_routes_service.infrastructure.adapters.out.entities.RouteDocument;
@@ -103,6 +104,30 @@ public class GeolocationRepositoryAdapter implements GeolocationRepositoryOutPor
     @Override
     public Flux<Route> findAllRoutes() {
         return routeMapper.listToDomain(geolocationRepository.findAll());
+    }
+
+    @Override
+    public Mono<TravelTracking> getUserLocation(String tripId, TravelTracking tracking) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getUserLocation'");
+    }
+
+    @Override
+    public Flux<TravelTracking> getUsersLocation(String tripId, List<TravelTracking> usersTracking) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getUsersLocation'");
+    }
+
+    @Override
+    public Mono<TravelTracking> updateUserLocation(String tripId, TravelTracking newUsertracking) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'updateUsersLocation'");
+    }
+
+    @Override
+    public Flux<TravelTracking> updateUsersLocation(String tripId, List<TravelTracking> newUserstracking) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'updateUsersLocation'");
     }
 
 }

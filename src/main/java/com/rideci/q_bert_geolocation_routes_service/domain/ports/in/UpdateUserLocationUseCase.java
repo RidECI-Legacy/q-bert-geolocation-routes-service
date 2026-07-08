@@ -6,6 +6,6 @@ import reactor.core.publisher.Mono;
 
 public interface UpdateUserLocationUseCase {
     
-    Mono<TravelTracking> updateUsersLocationUseCase(String tripId, TravelTracking newUsertracking);
+    Mono<TravelTracking> updateUserLocation(String tripId, TravelTracking newUsertracking);
 
 }

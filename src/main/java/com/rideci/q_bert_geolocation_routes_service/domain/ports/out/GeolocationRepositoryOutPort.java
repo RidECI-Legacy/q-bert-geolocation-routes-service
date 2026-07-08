@@ -22,7 +22,7 @@ public interface GeolocationRepositoryOutPort {
 
     Flux<TravelTracking> getUsersLocation(String tripId, List<TravelTracking> usersTracking);
 
-    Mono<TravelTracking> updateUsersLocation(String tripId, TravelTracking newUsertracking);
+    Mono<TravelTracking> updateUserLocation(String tripId, TravelTracking newUsertracking);
 
     Flux<TravelTracking> updateUsersLocation(String tripId, List<TravelTracking> newUserstracking);
 

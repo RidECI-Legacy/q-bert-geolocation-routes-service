@@ -8,6 +8,6 @@ import reactor.core.publisher.Flux;
 
 public interface UpdateUsersLocationUseCase {
 
-    Flux<TravelTracking> updateUsersLocationUseCase(String tripId, List<TravelTracking> newUserstracking);
+    Flux<TravelTracking> updateUsersLocation(String tripId, List<TravelTracking> newUserstracking);
 
 }
