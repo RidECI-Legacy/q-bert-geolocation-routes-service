@@ -6,6 +6,6 @@ import reactor.core.publisher.Mono;
 
 public interface GetUserLocationUseCase {
 
-    Mono<TravelTracking> getUserLocation(String tripId, TravelTracking tracking);
+    Mono<TravelTracking> getUserLocation(String tripId, String participantId);
 
 }

@@ -6,6 +6,6 @@ import reactor.core.publisher.Mono;
 
 public interface UpdateConfigurableIntervalsUseCase {
 
-    Mono<TrackingConfiguration> updateConfigurableInterval(int newUpdateIntervalSeconds);
+    Mono<TrackingConfiguration> updateConfigurableInterval(String tripId, String participantId, int newUpdateIntervalSeconds);
 
 }

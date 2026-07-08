@@ -3,6 +3,8 @@ package com.rideci.q_bert_geolocation_routes_service.domain.ports.out;
 import java.util.List;
 
 import com.rideci.q_bert_geolocation_routes_service.domain.model.Route;
+import com.rideci.q_bert_geolocation_routes_service.domain.model.RouteHistory;
+import com.rideci.q_bert_geolocation_routes_service.domain.model.TrackingConfiguration;
 import com.rideci.q_bert_geolocation_routes_service.domain.model.TravelTracking;
 
 import reactor.core.publisher.Flux;
@@ -18,12 +20,16 @@ public interface GeolocationRepositoryOutPort {
 
     Flux<Route> findAllRoutes();
 
-    Mono<TravelTracking> getUserLocation(String tripId, TravelTracking tracking);
+    Mono<TrackingConfiguration> updateConfigurableInterval(String tripId, String participantId, int newUpdateIntervalSeconds);
 
-    Flux<TravelTracking> getUsersLocation(String tripId, List<TravelTracking> usersTracking);
+    Mono<TravelTracking> getUserLocation(String tripId, String participantId);
+
+    Flux<TravelTracking> getUsersLocation(String tripId);
 
     Mono<TravelTracking> updateUserLocation(String tripId, TravelTracking newUsertracking);
 
     Flux<TravelTracking> updateUsersLocation(String tripId, List<TravelTracking> newUserstracking);
+
+    Flux<RouteHistory> getRouteHistory(String tripId, String participantId);
 
 }

@@ -1,7 +1,6 @@
 package com.rideci.q_bert_geolocation_routes_service.domain.model;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import com.rideci.q_bert_geolocation_routes_service.domain.model.enums.ParticipantRole;
 
@@ -26,13 +25,11 @@ public class TravelTracking {
 
     private double heading;
 
-    private Location curreLocation;
+    private Location currentLocation;
 
     private ParticipantRole participantRole;
 
     private TrackingConfiguration trackingConfiguration;
-
-    private List<RouteHistory> routeReplay;
 
     private LocalDateTime updatedAt;
     
