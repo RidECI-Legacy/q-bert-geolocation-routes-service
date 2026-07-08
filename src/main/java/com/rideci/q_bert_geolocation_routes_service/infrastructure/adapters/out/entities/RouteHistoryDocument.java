@@ -1,21 +1,23 @@
-package com.rideci.q_bert_geolocation_routes_service.domain.model;
+package com.rideci.q_bert_geolocation_routes_service.infrastructure.adapters.out.entities;
 
 import java.time.LocalDateTime;
+
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.rideci.q_bert_geolocation_routes_service.domain.model.enums.ParticipantRole;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Setter
-@Getter
+
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RouteHistory {
+@Document(collection = "route-history")
+public class RouteHistoryDocument {
 
     private String id;
 
@@ -27,10 +29,9 @@ public class RouteHistory {
 
     private double heading;
 
-    private Location location;
+    private LocationDocument location;
 
     private ParticipantRole participantRole;
 
     private LocalDateTime recordedAt;
-    
 }

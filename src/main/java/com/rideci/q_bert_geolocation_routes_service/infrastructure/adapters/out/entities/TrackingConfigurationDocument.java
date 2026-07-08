@@ -1,20 +1,19 @@
-package com.rideci.q_bert_geolocation_routes_service.domain.model;
+package com.rideci.q_bert_geolocation_routes_service.infrastructure.adapters.out.entities;
 
 import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Setter
-@Getter
+
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TrackingConfiguration {
-
+public class TrackingConfigurationDocument {
+ 
     private String tripId;
 
     private String participantId;
@@ -22,5 +21,5 @@ public class TrackingConfiguration {
     private int updateIntervalSeconds;
 
     private LocalDateTime updatedAt;
-    
+
 }
