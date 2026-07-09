@@ -2,6 +2,7 @@ package com.rideci.q_bert_geolocation_routes_service.infrastructure.adapters.out
 
 import java.time.LocalDateTime;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.rideci.q_bert_geolocation_routes_service.domain.model.enums.ParticipantRole;
@@ -19,6 +20,7 @@ import lombok.NoArgsConstructor;
 @Document(collection = "route-history")
 public class RouteHistoryDocument {
 
+    @Id
     private String id;
 
     private String tripId;
