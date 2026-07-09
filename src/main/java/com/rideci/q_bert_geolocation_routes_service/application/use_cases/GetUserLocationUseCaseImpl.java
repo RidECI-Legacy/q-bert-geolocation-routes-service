@@ -15,8 +15,8 @@ public class GetUserLocationUseCaseImpl implements GetUserLocationUseCase {
     private final GeolocationRepositoryOutPort geolocationRepositoryOutPort;
 
     @Override
-    public Mono<TravelTracking> getUserLocation(String tripId, TravelTracking tracking) {
-        return geolocationRepositoryOutPort.getUserLocation(tripId, tracking);
+    public Mono<TravelTracking> getUserLocation(String tripId, String participantId) {
+        return geolocationRepositoryOutPort.getUserLocation(tripId, participantId);
     }
     
 }
