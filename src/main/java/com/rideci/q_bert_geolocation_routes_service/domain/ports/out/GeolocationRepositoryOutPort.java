@@ -30,6 +30,6 @@ public interface GeolocationRepositoryOutPort {
 
     Flux<TravelTracking> updateUsersLocation(String tripId, List<TravelTracking> newUserstracking);
 
-    Flux<RouteHistory> getRouteHistory(String tripId, String participantId);
+    Flux<RouteHistory> getTravelReplay(String tripId, String participantId, double speedMultiplier);
 
 }
