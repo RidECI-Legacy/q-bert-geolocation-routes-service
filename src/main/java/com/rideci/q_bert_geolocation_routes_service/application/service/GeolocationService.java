@@ -5,12 +5,16 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.rideci.q_bert_geolocation_routes_service.domain.model.Route;
+import com.rideci.q_bert_geolocation_routes_service.domain.model.RouteHistory;
+import com.rideci.q_bert_geolocation_routes_service.domain.model.TrackingConfiguration;
 import com.rideci.q_bert_geolocation_routes_service.domain.model.TravelTracking;
 import com.rideci.q_bert_geolocation_routes_service.domain.ports.in.CreateRouteUseCase;
 import com.rideci.q_bert_geolocation_routes_service.domain.ports.in.GetAllRoutesUseCase;
 import com.rideci.q_bert_geolocation_routes_service.domain.ports.in.GetRouteUseCase;
+import com.rideci.q_bert_geolocation_routes_service.domain.ports.in.GetTravelReplayUseCase;
 import com.rideci.q_bert_geolocation_routes_service.domain.ports.in.GetUserLocationUseCase;
 import com.rideci.q_bert_geolocation_routes_service.domain.ports.in.GetUsersLocationUseCase;
+import com.rideci.q_bert_geolocation_routes_service.domain.ports.in.UpdateConfigurableIntervalsUseCase;
 import com.rideci.q_bert_geolocation_routes_service.domain.ports.in.UpdateRouteUseCase;
 import com.rideci.q_bert_geolocation_routes_service.domain.ports.in.UpdateUserLocationUseCase;
 import com.rideci.q_bert_geolocation_routes_service.domain.ports.in.UpdateUsersLocationUseCase;
@@ -23,7 +27,8 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class GeolocationService
         implements CreateRouteUseCase, UpdateRouteUseCase, GetRouteUseCase, GetAllRoutesUseCase, GetUserLocationUseCase,
-        GetUsersLocationUseCase, UpdateUserLocationUseCase, UpdateUsersLocationUseCase {
+        GetUsersLocationUseCase, UpdateUserLocationUseCase, UpdateUsersLocationUseCase, UpdateConfigurableIntervalsUseCase,
+        GetTravelReplayUseCase {
 
     private final CreateRouteUseCase createRouteUseCase;
     private final UpdateRouteUseCase updateRouteUseCase;
@@ -33,6 +38,8 @@ public class GeolocationService
     private final GetUsersLocationUseCase getUsersLocationUseCase;
     private final UpdateUserLocationUseCase updateUserLocationUseCase;
     private final UpdateUsersLocationUseCase updateUsersLocationUseCase;
+    private final UpdateConfigurableIntervalsUseCase updateConfigurableIntervalsUseCase;
+    private final GetTravelReplayUseCase getTravelReplayUseCase;
 
     @Override
     public Mono<Route> createRoute(Route route) {
@@ -65,13 +72,23 @@ public class GeolocationService
     }
 
     @Override
-    public Flux<TravelTracking> getUsersLocation(String tripId, List<TravelTracking> usersTracking) {
-        return getUsersLocationUseCase.getUsersLocation(tripId, usersTracking);
+    public Flux<TravelTracking> getUsersLocation(String tripId) {
+        return getUsersLocationUseCase.getUsersLocation(tripId);
     }
 
     @Override
-    public Mono<TravelTracking> getUserLocation(String tripId, TravelTracking tracking) {
-        return getUserLocationUseCase.getUserLocation(tripId, tracking);
+    public Mono<TravelTracking> getUserLocation(String tripId, String participantId) {
+        return getUserLocationUseCase.getUserLocation(tripId, participantId);
+    }
+
+    @Override
+    public Mono<TrackingConfiguration> updateConfigurableInterval(String tripId, String participantId, int newUpdateIntervalSeconds) {
+        return updateConfigurableIntervalsUseCase.updateConfigurableInterval(tripId, participantId, newUpdateIntervalSeconds);
+    }
+
+    @Override
+    public Flux<RouteHistory> getTravelReplay(String tripId, String participantId, double speedMultiplier) {
+        return getTravelReplayUseCase.getTravelReplay(tripId, participantId, speedMultiplier);
     }
 
 }
