@@ -46,7 +46,7 @@ public class TravelTrackingWebSocketHandler implements WebSocketHandler {
 
         Mono<Void> inbound = session.receive()
                 .map(WebSocketMessage::getPayloadAsText)
-                .flatMap(payload -> processIncoming(payload, tripId, participantId)
+                .flatMap(payload -> Mono.defer(() -> processIncoming(payload, tripId, participantId))
                         .onErrorResume(error -> {
                             log.warn("Discarding invalid tracking update for trip {} participant {}", tripId,
                                     participantId, error);
