@@ -11,6 +11,7 @@ import org.springframework.web.bind.support.WebExchangeBindException;
 import com.rideci.q_bert_geolocation_routes_service.domain.exception.InvalidRouteException;
 import com.rideci.q_bert_geolocation_routes_service.domain.exception.RouteNotFoundException;
 import com.rideci.q_bert_geolocation_routes_service.domain.exception.TomTomIntegrationException;
+import com.rideci.q_bert_geolocation_routes_service.domain.exception.TravelTrackingNotFoundException;
 import com.rideci.q_bert_geolocation_routes_service.infrastructure.adapters.in.dto.ErrorResponse;
 
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +22,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(RouteNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleRouteNotFound(RouteNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(ErrorResponse.of(HttpStatus.NOT_FOUND.value(), ex.getMessage()));
+    }
+
+    @ExceptionHandler(TravelTrackingNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleTravelTrackingNotFound(TravelTrackingNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(ErrorResponse.of(HttpStatus.NOT_FOUND.value(), ex.getMessage()));
     }
