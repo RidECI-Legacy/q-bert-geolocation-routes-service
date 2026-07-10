@@ -24,7 +24,6 @@ import org.springframework.data.redis.core.ReactiveValueOperations;
 
 import com.rideci.q_bert_geolocation_routes_service.domain.exception.TravelTrackingNotFoundException;
 import com.rideci.q_bert_geolocation_routes_service.domain.model.Location;
-import com.rideci.q_bert_geolocation_routes_service.domain.model.TrackingConfiguration;
 import com.rideci.q_bert_geolocation_routes_service.domain.model.TravelTracking;
 import com.rideci.q_bert_geolocation_routes_service.domain.model.enums.ParticipantRole;
 import com.rideci.q_bert_geolocation_routes_service.domain.ports.out.TomTomOutPort;
