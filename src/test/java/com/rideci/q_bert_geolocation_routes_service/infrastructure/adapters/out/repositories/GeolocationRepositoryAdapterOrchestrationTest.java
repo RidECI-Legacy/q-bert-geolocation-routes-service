@@ -21,7 +21,12 @@ import com.rideci.q_bert_geolocation_routes_service.domain.model.Route;
 import com.rideci.q_bert_geolocation_routes_service.domain.model.RouteInfo;
 import com.rideci.q_bert_geolocation_routes_service.domain.ports.out.TomTomOutPort;
 import com.rideci.q_bert_geolocation_routes_service.infrastructure.adapters.out.entities.RouteDocument;
+import com.rideci.q_bert_geolocation_routes_service.infrastructure.adapters.out.entities.TrackingConfigurationDocument;
+import com.rideci.q_bert_geolocation_routes_service.infrastructure.adapters.out.entities.TravelTrackingDocument;
 import com.rideci.q_bert_geolocation_routes_service.infrastructure.adapters.out.mapper.RouteMapper;
+import com.rideci.q_bert_geolocation_routes_service.infrastructure.adapters.out.mapper.TravelTrackingMapper;
+
+import org.springframework.data.redis.core.ReactiveRedisTemplate;
 
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -35,13 +40,27 @@ class GeolocationRepositoryAdapterOrchestrationTest {
     @Mock
     private TomTomOutPort tomTomOutPort;
 
+    @Mock
+    private RouteHistoryRepository routeHistoryRepository;
+
+    @Mock
+    private TravelTrackingMapper travelTrackingMapper;
+
+    @Mock
+    private ReactiveRedisTemplate<String, TravelTrackingDocument> travelTrackingRedisTemplate;
+
+    @Mock
+    private ReactiveRedisTemplate<String, TrackingConfigurationDocument> trackingConfigurationRedisTemplate;
+
     private final RouteMapper routeMapper = org.mapstruct.factory.Mappers.getMapper(RouteMapper.class);
 
     private GeolocationRepositoryAdapter adapter;
 
     @BeforeEach
     void setUp() {
-        adapter = new GeolocationRepositoryAdapter(geolocationRepository, routeMapper, tomTomOutPort);
+        adapter = new GeolocationRepositoryAdapter(geolocationRepository, routeMapper, tomTomOutPort,
+                routeHistoryRepository, travelTrackingMapper, travelTrackingRedisTemplate,
+                trackingConfigurationRedisTemplate);
     }
 
     @Test
