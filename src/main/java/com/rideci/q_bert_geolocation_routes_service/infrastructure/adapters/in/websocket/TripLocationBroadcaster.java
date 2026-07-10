@@ -10,7 +10,6 @@ import com.rideci.q_bert_geolocation_routes_service.domain.model.TravelTracking;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Sinks;
 
-// In-memory fan-out of live location updates per trip, scoped to a single service instance.
 @Component
 public class TripLocationBroadcaster {
 
