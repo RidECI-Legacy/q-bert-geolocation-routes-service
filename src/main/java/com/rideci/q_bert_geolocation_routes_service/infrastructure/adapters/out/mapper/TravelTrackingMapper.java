@@ -2,9 +2,11 @@ package com.rideci.q_bert_geolocation_routes_service.infrastructure.adapters.out
 
 import org.mapstruct.Mapper;
 
+import com.rideci.q_bert_geolocation_routes_service.domain.model.LocationShare;
 import com.rideci.q_bert_geolocation_routes_service.domain.model.RouteHistory;
 import com.rideci.q_bert_geolocation_routes_service.domain.model.TrackingConfiguration;
 import com.rideci.q_bert_geolocation_routes_service.domain.model.TravelTracking;
+import com.rideci.q_bert_geolocation_routes_service.infrastructure.adapters.out.entities.LocationShareDocument;
 import com.rideci.q_bert_geolocation_routes_service.infrastructure.adapters.out.entities.RouteHistoryDocument;
 import com.rideci.q_bert_geolocation_routes_service.infrastructure.adapters.out.entities.TrackingConfigurationDocument;
 import com.rideci.q_bert_geolocation_routes_service.infrastructure.adapters.out.entities.TravelTrackingDocument;
@@ -26,6 +28,10 @@ public interface TravelTrackingMapper {
     TrackingConfigurationDocument toDocument(TrackingConfiguration trackingConfiguration);
 
     TrackingConfiguration toDomain(TrackingConfigurationDocument trackingConfigurationDocument);
+
+    LocationShareDocument toDocument(LocationShare locationShare);
+
+    LocationShare toDomain(LocationShareDocument locationShareDocument);
 
     default Mono<TravelTrackingDocument> toDocument(Mono<TravelTracking> trackingMono) {
         return trackingMono.map(this::toDocument);
