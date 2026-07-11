@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.rideci.q_bert_geolocation_routes_service.domain.model.LocationShare;
 import com.rideci.q_bert_geolocation_routes_service.domain.model.Route;
 import com.rideci.q_bert_geolocation_routes_service.domain.model.RouteHistory;
 import com.rideci.q_bert_geolocation_routes_service.domain.model.TrackingConfiguration;
@@ -14,6 +15,7 @@ import com.rideci.q_bert_geolocation_routes_service.domain.ports.in.GetRouteUseC
 import com.rideci.q_bert_geolocation_routes_service.domain.ports.in.GetTravelReplayUseCase;
 import com.rideci.q_bert_geolocation_routes_service.domain.ports.in.GetUserLocationUseCase;
 import com.rideci.q_bert_geolocation_routes_service.domain.ports.in.GetUsersLocationUseCase;
+import com.rideci.q_bert_geolocation_routes_service.domain.ports.in.ShareLocationUseCase;
 import com.rideci.q_bert_geolocation_routes_service.domain.ports.in.UpdateConfigurableIntervalsUseCase;
 import com.rideci.q_bert_geolocation_routes_service.domain.ports.in.UpdateRouteUseCase;
 import com.rideci.q_bert_geolocation_routes_service.domain.ports.in.UpdateUserLocationUseCase;
@@ -28,7 +30,7 @@ import reactor.core.publisher.Mono;
 public class GeolocationService
         implements CreateRouteUseCase, UpdateRouteUseCase, GetRouteUseCase, GetAllRoutesUseCase, GetUserLocationUseCase,
         GetUsersLocationUseCase, UpdateUserLocationUseCase, UpdateUsersLocationUseCase, UpdateConfigurableIntervalsUseCase,
-        GetTravelReplayUseCase {
+        GetTravelReplayUseCase, ShareLocationUseCase {
 
     private final CreateRouteUseCase createRouteUseCase;
     private final UpdateRouteUseCase updateRouteUseCase;
@@ -40,6 +42,7 @@ public class GeolocationService
     private final UpdateUsersLocationUseCase updateUsersLocationUseCase;
     private final UpdateConfigurableIntervalsUseCase updateConfigurableIntervalsUseCase;
     private final GetTravelReplayUseCase getTravelReplayUseCase;
+    private final ShareLocationUseCase shareLocationUseCase;
 
     @Override
     public Mono<Route> createRoute(Route route) {
@@ -91,4 +94,8 @@ public class GeolocationService
         return getTravelReplayUseCase.getTravelReplay(tripId, participantId, speedMultiplier);
     }
 
+    @Override
+    public Mono<LocationShare> shareLocation(String tripId, String passengerId, String emergencyContactId) {
+        return shareLocationUseCase.shareLocation(tripId, passengerId, emergencyContactId);
+    }
 }
