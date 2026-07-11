@@ -18,8 +18,10 @@ import com.rideci.q_bert_geolocation_routes_service.domain.model.RouteHistory;
 import com.rideci.q_bert_geolocation_routes_service.domain.model.RouteInfo;
 import com.rideci.q_bert_geolocation_routes_service.domain.model.TrackingConfiguration;
 import com.rideci.q_bert_geolocation_routes_service.domain.model.TravelTracking;
+import com.rideci.q_bert_geolocation_routes_service.domain.model.enums.ShareStatus;
 import com.rideci.q_bert_geolocation_routes_service.domain.ports.out.GeolocationRepositoryOutPort;
 import com.rideci.q_bert_geolocation_routes_service.domain.ports.out.TomTomOutPort;
+import com.rideci.q_bert_geolocation_routes_service.infrastructure.adapters.out.entities.LocationShareDocument;
 import com.rideci.q_bert_geolocation_routes_service.infrastructure.adapters.out.entities.RouteDocument;
 import com.rideci.q_bert_geolocation_routes_service.infrastructure.adapters.out.entities.RouteHistoryDocument;
 import com.rideci.q_bert_geolocation_routes_service.infrastructure.adapters.out.entities.TrackingConfigurationDocument;
@@ -43,6 +45,7 @@ public class GeolocationRepositoryAdapter implements GeolocationRepositoryOutPor
     private final RouteMapper routeMapper;
     private final TomTomOutPort tomTomOutPort;
     private final RouteHistoryRepository routeHistoryRepository;
+    private final LocationShareRepository locationShareRepository;
     private final TravelTrackingMapper travelTrackingMapper;
     private final ReactiveRedisTemplate<String, TravelTrackingDocument> travelTrackingRedisTemplate;
     private final ReactiveRedisTemplate<String, TrackingConfigurationDocument> trackingConfigurationRedisTemplate;
@@ -233,8 +236,26 @@ public class GeolocationRepositoryAdapter implements GeolocationRepositoryOutPor
 
     @Override
     public Mono<LocationShare> shareLocation(String tripId, String passengerId, String emergencyContactId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'shareLocation'");
+        LocalDateTime now = LocalDateTime.now(ZoneOffset.UTC);
+
+        LocationShareDocument document = LocationShareDocument.builder()
+                .id(UUID.randomUUID().toString())
+                .tripId(tripId)
+                .participantId(passengerId)
+                .emergencyContactId(emergencyContactId)
+                .shareStatus(ShareStatus.ACTIVE)
+                .createdAt(now)
+                .updatedAt(now)
+                .build();
+
+        return locationShareRepository.save(document)
+                .map(travelTrackingMapper::toDomain);
+    }
+
+    @Override
+    public Mono<LocationShare> getLocationShare(String shareId) {
+        return locationShareRepository.findById(shareId)
+                .map(travelTrackingMapper::toDomain);
     }
 
 }
