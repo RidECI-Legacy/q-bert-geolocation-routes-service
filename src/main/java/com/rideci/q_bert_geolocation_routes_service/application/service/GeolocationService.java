@@ -11,6 +11,7 @@ import com.rideci.q_bert_geolocation_routes_service.domain.model.TrackingConfigu
 import com.rideci.q_bert_geolocation_routes_service.domain.model.TravelTracking;
 import com.rideci.q_bert_geolocation_routes_service.domain.ports.in.CreateRouteUseCase;
 import com.rideci.q_bert_geolocation_routes_service.domain.ports.in.GetAllRoutesUseCase;
+import com.rideci.q_bert_geolocation_routes_service.domain.ports.in.GetLocationShareUseCase;
 import com.rideci.q_bert_geolocation_routes_service.domain.ports.in.GetRouteUseCase;
 import com.rideci.q_bert_geolocation_routes_service.domain.ports.in.GetTravelReplayUseCase;
 import com.rideci.q_bert_geolocation_routes_service.domain.ports.in.GetUserLocationUseCase;
@@ -30,7 +31,7 @@ import reactor.core.publisher.Mono;
 public class GeolocationService
         implements CreateRouteUseCase, UpdateRouteUseCase, GetRouteUseCase, GetAllRoutesUseCase, GetUserLocationUseCase,
         GetUsersLocationUseCase, UpdateUserLocationUseCase, UpdateUsersLocationUseCase, UpdateConfigurableIntervalsUseCase,
-        GetTravelReplayUseCase, ShareLocationUseCase {
+        GetTravelReplayUseCase, ShareLocationUseCase, GetLocationShareUseCase {
 
     private final CreateRouteUseCase createRouteUseCase;
     private final UpdateRouteUseCase updateRouteUseCase;
@@ -43,6 +44,7 @@ public class GeolocationService
     private final UpdateConfigurableIntervalsUseCase updateConfigurableIntervalsUseCase;
     private final GetTravelReplayUseCase getTravelReplayUseCase;
     private final ShareLocationUseCase shareLocationUseCase;
+    private final GetLocationShareUseCase getLocationShareUseCase;
 
     @Override
     public Mono<Route> createRoute(Route route) {
@@ -98,4 +100,10 @@ public class GeolocationService
     public Mono<LocationShare> shareLocation(String tripId, String passengerId, String emergencyContactId) {
         return shareLocationUseCase.shareLocation(tripId, passengerId, emergencyContactId);
     }
+
+    @Override
+    public Mono<LocationShare> getLocationShare(String shareId) {
+        return getLocationShareUseCase.getLocationShare(shareId);
+    }
+
 }
