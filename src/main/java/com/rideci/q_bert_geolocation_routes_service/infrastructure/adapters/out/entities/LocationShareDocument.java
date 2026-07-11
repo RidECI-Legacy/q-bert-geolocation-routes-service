@@ -3,6 +3,7 @@ package com.rideci.q_bert_geolocation_routes_service.infrastructure.adapters.out
 import java.time.LocalDateTime;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.rideci.q_bert_geolocation_routes_service.domain.model.enums.ShareStatus;
 
@@ -15,6 +16,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Document(collection = "location-shares")
 public class LocationShareDocument {
 
     @Id
@@ -35,3 +37,4 @@ public class LocationShareDocument {
     private LocalDateTime updatedAt;
 
 }
+
