@@ -31,6 +31,8 @@ public class TravelTracking {
 
     private TrackingConfiguration trackingConfiguration;
 
+    private LocationShare locationShare;
+
     private LocalDateTime updatedAt;
     
 }
