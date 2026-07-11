@@ -2,6 +2,7 @@ package com.rideci.q_bert_geolocation_routes_service.domain.ports.out;
 
 import java.util.List;
 
+import com.rideci.q_bert_geolocation_routes_service.domain.model.LocationShare;
 import com.rideci.q_bert_geolocation_routes_service.domain.model.Route;
 import com.rideci.q_bert_geolocation_routes_service.domain.model.RouteHistory;
 import com.rideci.q_bert_geolocation_routes_service.domain.model.TrackingConfiguration;
@@ -31,5 +32,7 @@ public interface GeolocationRepositoryOutPort {
     Flux<TravelTracking> updateUsersLocation(String tripId, List<TravelTracking> newUserstracking);
 
     Flux<RouteHistory> getTravelReplay(String tripId, String participantId, double speedMultiplier);
+
+    Mono<LocationShare> shareLocation(String tripId, String passengerId, String emergencyContactId);
 
 }
