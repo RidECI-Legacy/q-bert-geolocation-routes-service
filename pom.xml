@@ -28,7 +28,7 @@
 	</scm>
 	<properties>
 		<java.version>26</java.version>
-		<sonar.organization>rideci-legacy</sonar.organization>
+		<sonar.organization>rideci-legacy-1</sonar.organization>
 		<sonar.projectKey>RidECI-Legacy_q-bert-geolocation-routes-service</sonar.projectKey>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 		<sonar.coverage.jacoco.xmlReportPaths>${project.build.directory}/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
