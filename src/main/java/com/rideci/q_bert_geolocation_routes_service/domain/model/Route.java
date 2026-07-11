@@ -34,6 +34,8 @@ public class Route {
 
     private List<PickUpPoint> pickUpPoints;
 
+    private TravelTracking travelTracking;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
