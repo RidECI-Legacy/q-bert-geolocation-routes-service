@@ -35,4 +35,6 @@ public interface GeolocationRepositoryOutPort {
 
     Mono<LocationShare> shareLocation(String tripId, String passengerId, String emergencyContactId);
 
+    Mono<LocationShare> getLocationShare(String shareId);
+
 }
