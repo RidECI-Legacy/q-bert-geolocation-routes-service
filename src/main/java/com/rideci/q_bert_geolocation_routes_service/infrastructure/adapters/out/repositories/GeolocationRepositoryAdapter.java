@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import com.rideci.q_bert_geolocation_routes_service.domain.exception.RouteNotFoundException;
 import com.rideci.q_bert_geolocation_routes_service.domain.exception.TravelTrackingNotFoundException;
+import com.rideci.q_bert_geolocation_routes_service.domain.model.LocationShare;
 import com.rideci.q_bert_geolocation_routes_service.domain.model.PickUpPoint;
 import com.rideci.q_bert_geolocation_routes_service.domain.model.Route;
 import com.rideci.q_bert_geolocation_routes_service.domain.model.RouteHistory;
@@ -228,6 +229,12 @@ public class GeolocationRepositoryAdapter implements GeolocationRepositoryOutPor
 
     private String trackingConfigurationKey(String tripId, String participantId) {
         return "tracking-configuration:" + tripId + ":" + participantId;
+    }
+
+    @Override
+    public Mono<LocationShare> shareLocation(String tripId, String passengerId, String emergencyContactId) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'shareLocation'");
     }
 
 }
