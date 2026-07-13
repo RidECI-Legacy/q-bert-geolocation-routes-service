@@ -56,10 +56,13 @@ class GeolocationRepositoryAdapterOrchestrationTest {
 
     private GeolocationRepositoryAdapter adapter;
 
+    @Mock
+    private LocationShareRepository locationShareRepository;
+
     @BeforeEach
     void setUp() {
         adapter = new GeolocationRepositoryAdapter(geolocationRepository, routeMapper, tomTomOutPort,
-                routeHistoryRepository, travelTrackingMapper, travelTrackingRedisTemplate,
+                routeHistoryRepository, locationShareRepository, travelTrackingMapper, travelTrackingRedisTemplate,
                 trackingConfigurationRedisTemplate);
     }
 

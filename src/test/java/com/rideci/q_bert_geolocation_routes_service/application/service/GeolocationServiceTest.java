@@ -11,16 +11,19 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.rideci.q_bert_geolocation_routes_service.domain.model.LocationShare;
 import com.rideci.q_bert_geolocation_routes_service.domain.model.Route;
 import com.rideci.q_bert_geolocation_routes_service.domain.model.RouteHistory;
 import com.rideci.q_bert_geolocation_routes_service.domain.model.TrackingConfiguration;
 import com.rideci.q_bert_geolocation_routes_service.domain.model.TravelTracking;
 import com.rideci.q_bert_geolocation_routes_service.domain.ports.in.CreateRouteUseCase;
 import com.rideci.q_bert_geolocation_routes_service.domain.ports.in.GetAllRoutesUseCase;
+import com.rideci.q_bert_geolocation_routes_service.domain.ports.in.GetLocationShareUseCase;
 import com.rideci.q_bert_geolocation_routes_service.domain.ports.in.GetRouteUseCase;
 import com.rideci.q_bert_geolocation_routes_service.domain.ports.in.GetTravelReplayUseCase;
 import com.rideci.q_bert_geolocation_routes_service.domain.ports.in.GetUserLocationUseCase;
 import com.rideci.q_bert_geolocation_routes_service.domain.ports.in.GetUsersLocationUseCase;
+import com.rideci.q_bert_geolocation_routes_service.domain.ports.in.ShareLocationUseCase;
 import com.rideci.q_bert_geolocation_routes_service.domain.ports.in.UpdateConfigurableIntervalsUseCase;
 import com.rideci.q_bert_geolocation_routes_service.domain.ports.in.UpdateRouteUseCase;
 import com.rideci.q_bert_geolocation_routes_service.domain.ports.in.UpdateUserLocationUseCase;
@@ -53,6 +56,10 @@ class GeolocationServiceTest {
     private UpdateConfigurableIntervalsUseCase updateConfigurableIntervalsUseCase;
     @Mock
     private GetTravelReplayUseCase getTravelReplayUseCase;
+    @Mock
+    private ShareLocationUseCase shareLocationUseCase;
+    @Mock
+    private GetLocationShareUseCase getLocationShareUseCase;
 
     private GeolocationService geolocationService;
 
@@ -60,7 +67,8 @@ class GeolocationServiceTest {
     void setUp() {
         geolocationService = new GeolocationService(createRouteUseCase, updateRouteUseCase, getRouteUseCase,
                 getAllRoutesUseCase, getUserLocationUseCase, getUsersLocationUseCase, updateUserLocationUseCase,
-                updateUsersLocationUseCase, updateConfigurableIntervalsUseCase, getTravelReplayUseCase);
+                updateUsersLocationUseCase, updateConfigurableIntervalsUseCase, getTravelReplayUseCase,
+                shareLocationUseCase, getLocationShareUseCase);
     }
 
     @Test
@@ -175,6 +183,30 @@ class GeolocationServiceTest {
                 .verifyComplete();
 
         verify(getTravelReplayUseCase).getTravelReplay("trip-1", "p1", 2.0);
+    }
+
+    @Test
+    void shareLocation_delegatesToShareLocationUseCase() {
+        LocationShare share = LocationShare.builder().tripId("trip-1").participantId("p1").build();
+        when(shareLocationUseCase.shareLocation("trip-1", "p1", "contact-1")).thenReturn(Mono.just(share));
+
+        StepVerifier.create(geolocationService.shareLocation("trip-1", "p1", "contact-1"))
+                .expectNext(share)
+                .verifyComplete();
+
+        verify(shareLocationUseCase).shareLocation("trip-1", "p1", "contact-1");
+    }
+
+    @Test
+    void getLocationShare_delegatesToGetLocationShareUseCase() {
+        LocationShare share = LocationShare.builder().id("share-1").tripId("trip-1").participantId("p1").build();
+        when(getLocationShareUseCase.getLocationShare("share-1")).thenReturn(Mono.just(share));
+
+        StepVerifier.create(geolocationService.getLocationShare("share-1"))
+                .expectNext(share)
+                .verifyComplete();
+
+        verify(getLocationShareUseCase).getLocationShare("share-1");
     }
 
 }
