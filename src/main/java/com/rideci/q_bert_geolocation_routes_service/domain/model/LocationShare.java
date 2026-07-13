@@ -2,7 +2,7 @@ package com.rideci.q_bert_geolocation_routes_service.domain.model;
 
 import java.time.LocalDateTime;
 
-import com.rideci.q_bert_geolocation_routes_service.domain.model.enums.ParticipantRole;
+import com.rideci.q_bert_geolocation_routes_service.domain.model.enums.ShareStatus;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,23 +15,21 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TravelTracking {
+public class LocationShare {
 
-    private String tripId;
+    private String id;
 
     private String participantId;
 
-    private double speed;
+    private String tripId;
 
-    private double heading;
+    private String emergencyContactId;
 
     private Location currentLocation;
 
-    private ParticipantRole participantRole;
+    private ShareStatus shareStatus;
 
-    private TrackingConfiguration trackingConfiguration;
-
-    private LocationShare locationShare;
+    private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
     

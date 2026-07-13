@@ -29,6 +29,8 @@ public class TravelTrackingDocument {
 
     private TrackingConfigurationDocument trackingConfiguration;
 
+    private LocationShareDocument locationShare;
+
     private LocalDateTime updatedAt;
 
 }

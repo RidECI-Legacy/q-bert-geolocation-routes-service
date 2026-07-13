@@ -62,6 +62,9 @@ class GeolocationRepositoryAdapterTravelTrackingTest {
     @Mock
     private ReactiveValueOperations<String, TrackingConfigurationDocument> trackingConfigurationValueOps;
 
+    @Mock
+    private LocationShareRepository locationShareRepository;
+
     private final RouteMapper routeMapper = Mappers.getMapper(RouteMapper.class);
     private final TravelTrackingMapper travelTrackingMapper = Mappers.getMapper(TravelTrackingMapper.class);
 
@@ -70,7 +73,7 @@ class GeolocationRepositoryAdapterTravelTrackingTest {
     @BeforeEach
     void setUp() {
         adapter = new GeolocationRepositoryAdapter(geolocationRepository, routeMapper, tomTomOutPort,
-                routeHistoryRepository, travelTrackingMapper, travelTrackingRedisTemplate,
+                routeHistoryRepository, locationShareRepository, travelTrackingMapper, travelTrackingRedisTemplate,
                 trackingConfigurationRedisTemplate);
     }
 
