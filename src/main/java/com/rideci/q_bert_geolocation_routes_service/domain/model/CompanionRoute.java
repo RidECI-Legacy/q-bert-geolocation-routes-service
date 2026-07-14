@@ -1,6 +1,7 @@
 package com.rideci.q_bert_geolocation_routes_service.domain.model;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,7 +14,7 @@ import lombok.Setter;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PlanRoute {
+public class CompanionRoute {
 
     private String id;
 
@@ -23,9 +24,15 @@ public class PlanRoute {
 
     private Location destination;
 
-    private String polyline;
+    private LocalDateTime departureTime;
 
-    private TravelTracking travelTracking;
+    private LocalDateTime estimatedArrivalTime;
+
+    private double totalDistance;
+
+    private int totalTransfers;
+
+    private List<TransitLeg> legs;
 
     private LocalDateTime createdAt;
 

@@ -1,5 +1,6 @@
 package com.rideci.q_bert_geolocation_routes_service.domain.model;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 import com.rideci.q_bert_geolocation_routes_service.domain.model.enums.LegMode;
@@ -15,24 +16,40 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Leg {
+public class TransitLeg {
 
     private String id;
+
+    private int sequence;
+
+    private LegMode mode;
 
     private Location origin;
 
     private Location destination;
 
-    private LocalDateTime duration;
+    private String originStopId;
+
+    private String destinationStopId;
+
+    private String routeShortName;
+
+    private String agencyName;
+
+    private String gtfsRouteId;
+
+    private String gtfsTripId;
+
+    private String headsign;
+
+    private String polyline;
 
     private double distance;
 
-    private String routeName;
-
-    private LegMode mode;
+    private Duration duration;
 
     private LocalDateTime departureTime;
 
     private LocalDateTime arrivalTime;
-    
+
 }

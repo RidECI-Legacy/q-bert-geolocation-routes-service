@@ -7,25 +7,19 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
 @Builder
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Itinerary {
+public class TransitItinerary {
 
-    private String id;
-
-    private LocalDateTime estimatedArrivalTime;
+    private List<TransitLeg> legs;
 
     private double totalDistance;
 
-    private double remainingDistance;
-
     private int totalTransfers;
 
-    private List<Leg> legs;
-    
+    private LocalDateTime estimatedArrivalTime;
+
 }
