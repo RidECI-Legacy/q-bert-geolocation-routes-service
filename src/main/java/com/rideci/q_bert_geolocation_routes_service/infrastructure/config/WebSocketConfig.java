@@ -9,6 +9,7 @@ import org.springframework.web.reactive.HandlerMapping;
 import org.springframework.web.reactive.socket.WebSocketHandler;
 import org.springframework.web.reactive.socket.server.support.WebSocketHandlerAdapter;
 
+import com.rideci.q_bert_geolocation_routes_service.infrastructure.adapters.in.websocket.BusRealtimeWebSocketHandler;
 import com.rideci.q_bert_geolocation_routes_service.infrastructure.adapters.in.websocket.LocationShareWebSocketHandler;
 import com.rideci.q_bert_geolocation_routes_service.infrastructure.adapters.in.websocket.TravelReplayWebSocketHandler;
 import com.rideci.q_bert_geolocation_routes_service.infrastructure.adapters.in.websocket.TravelTrackingWebSocketHandler;
@@ -18,11 +19,13 @@ public class WebSocketConfig {
 
     @Bean
     public HandlerMapping webSocketHandlerMapping(TravelTrackingWebSocketHandler trackingHandler,
-            TravelReplayWebSocketHandler replayHandler, LocationShareWebSocketHandler locationShareHandler) {
+            TravelReplayWebSocketHandler replayHandler, LocationShareWebSocketHandler locationShareHandler,
+            BusRealtimeWebSocketHandler busRealtimeHandler) {
         Map<String, WebSocketHandler> urlMap = Map.of(
                 "/ws/trips/*/tracking/*", trackingHandler,
                 "/ws/trips/*/replay/*", replayHandler,
-                "/ws/shares/*", locationShareHandler);
+                "/ws/shares/*", locationShareHandler,
+                "/ws/companion-routes/*/legs/*/vehicle-status", busRealtimeHandler);
 
         SimpleUrlHandlerMapping mapping = new SimpleUrlHandlerMapping();
         mapping.setUrlMap(urlMap);
